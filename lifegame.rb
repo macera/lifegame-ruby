@@ -3,6 +3,24 @@ X = 5
 Y = 5
 LIFE_CYCLE = 3
 
+class LifeCycle
+  X = 5
+  Y = 5
+  attr_reader :board
+
+  def initialize
+    # 初期化
+    cells = []
+    Y.times do |y|
+      cells << []
+      X.times do |x|
+        cells[y] << '□'
+      end
+    end
+    @board = cells
+  end
+end
+
 def lifegame
   lines = ""
 
