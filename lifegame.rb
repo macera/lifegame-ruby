@@ -1,71 +1,72 @@
+# TODO
+X = 5
+Y = 5
+LIFE_CYCLE = 3
+
 def lifegame
   lines = ""
 
-  b = []
-  for i in 0..4 do
-    b << []
-    for j in 0..4 do
-      b[i] << '□'
+  # 初期化
+  cells = []
+  Y.times do |y|
+    cells << []
+    X.times do |x|
+      cells[y] << '□'
     end
   end
 
-  b[2][1] = '■'
-  b[2][2] = '■'
-  b[2][3] = '■'
+  # 初期設定
+  cells[2][1] = '■'
+  cells[2][2] = '■'
+  cells[2][3] = '■'
 
-  for i in 0..4 do
+  #初期設定の改行設定
+  Y.times do |y|
     line = ""
-    for j in 0..4 do
-      line += b[i][j]
+    X.times do |x|
+      line += cells[y][x]
     end
     lines += line + "\n"
   end
 
-  for times in 0..2
-    bb = [[],[],[],[],[]]
-    for i in 0..4 do
-      for j in 0..4 do
+  # ゲームスタート
+  LIFE_CYCLE.times do |time|
+    new_cells = [[],[],[],[],[]]
+    Y.times do |y|
+      X.times do |x|
         count = 0
 
-        if b[i][j] == '□'
+        if cells[y][x] == '□'
           # 誕生の場合
           count = 0
-          if b[i-1][j-1] == '■'; count += 1 end
-          if b[i-1][j] == '■'; count += 1 end
-          if b[i-1][j+1] == '■'; count += 1 end
-          if b[i][j-1] == '■'; count += 1 end
-          if b[i][j+1] == '■'; count += 1 end
-          if i < 4 && b[i+1][j-1] == '■'; count += 1 end
-          if i < 4 && b[i+1][j] == '■'; count += 1 end
-          if i < 4 && b[i+1][j+1] == '■'; count += 1 end
-          if count >= 3
-            bb[i][j] = '■'
-          else
-            bb[i][j] = '□'
-          end
+          count += 1 if cells[y-1][x-1] == '■'
+          count += 1 if cells[y-1][x] == '■'
+          count += 1 if cells[y-1][x+1] == '■'
+          count += 1 if cells[y][x-1] == '■'
+          count += 1 if cells[y][x+1] == '■'
+          count += 1 if y < 4 && cells[y+1][x-1] == '■'
+          count += 1 if y < 4 && cells[y+1][x] == '■'
+          count += 1 if y < 4 && cells[y+1][x+1] == '■'
+          new_cells[y][x] = count >= 3 ? '■' : '□'
         end
 
-        if b[i][j] == '■'
+        if cells[y][x] == '■'
           # 生存・過疎・過密の場合
           count = 0
-          if b[i-1][j] == '■'; count += 1 end
-          if b[i][j-1] == '■'; count += 1 end
-          if b[i][j+1] == '■'; count += 1 end
-          if b[i+1][j] == '■'; count += 1 end
-          if count == 2
-            bb[i][j] = b[i][j]
-          else
-            bb[i][j] = '□'
-          end
+          count += 1 if cells[y-1][x] == '■'
+          count += 1 if cells[y][x-1] == '■'
+          count += 1 if cells[y][x+1] == '■'
+          count += 1 if cells[y+1][x] == '■'
+          new_cells[y][x] = count == 2 ? cells[y][x] : '□'
         end
       end
     end
-    b = bb
-    lines += "#{times}==========" + "\n"
-    for i in 0..4 do
+    cells = new_cells
+    lines += "#{time}==========" + "\n"
+    Y.times do |y|
       line = ""
-      for j in 0..4 do
-        line += b[i][j]
+      X.times do |x|
+        line += cells[y][x]
       end
       lines += line + "\n"
     end
