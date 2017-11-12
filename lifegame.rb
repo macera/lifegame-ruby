@@ -1,24 +1,31 @@
-# TODO
 X = 5
 Y = 5
 LIFE_CYCLE = 3
 
-class LifeCycle
+class LifeGame
   X = 5
   Y = 5
+  LIFE = "■"
+  DEATH = "□"
   attr_reader :board
 
   def initialize
-    # 初期化
-    cells = []
-    Y.times do |y|
-      cells << []
-      X.times do |x|
-        cells[y] << '□'
-      end
-    end
-    @board = cells
+    @board = []
+    Y.times { @board << Array.new(X, DEATH) }
   end
+
+  def born(*cells)
+    cells.each do |cell|
+      @board[cell[0]][cell[1]] = LIFE
+    end
+  end
+
+  def capture
+    lines = ""
+    Y.times { |y| lines += board[y].join + "\n" }
+    lines
+  end
+
 end
 
 def lifegame
